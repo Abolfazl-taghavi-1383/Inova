@@ -35,4 +35,5 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Environment files
 .env
