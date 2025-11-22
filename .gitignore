@@ -1,0 +1,38 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.pyo
+*.pyd
+
+# --- Django specific ---
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+*/migrations/__pycache__/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.log
+
+# --- Virtual environments ---
+venv/
+env/
+ENV/
+.venv/
+
+# --- Docker specific ---
+postgres_data/
+*.log
+
+# --- System files ---
+*.DS_Store
+Thumbs.db
+
+# --- IDEs ---
+.vscode/
+.idea/
+
+.env
