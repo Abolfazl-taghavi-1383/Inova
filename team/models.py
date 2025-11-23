@@ -68,3 +68,22 @@ class WorkExperience(models.Model):
 
     def __str__(self):
         return f"{self.position} at {self.company_name}"
+    
+class Education(models.Model):
+    member = models.ForeignKey(
+        TeamMember,
+        on_delete=models.CASCADE,
+        related_name='educations'
+    )
+    degree = models.CharField(max_length=100)  # مثلاً Bachelor, Master, PhD
+    field_of_study = models.CharField(max_length=150)
+    university = models.CharField(max_length=150)
+    start_year = models.IntegerField()
+    end_year = models.IntegerField(blank=True, null=True)
+    description = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['-start_year']
+
+    def __str__(self):
+        return f"{self.degree} in {self.field_of_study} at {self.university}"
