@@ -1,0 +1,5 @@
+http://localhost:8000/admin/  --> admin dashboard
+http://localhost:8000/api/team/ --> responses team members list
+http://localhost:8000/api/team/uuid-pk --> responses team member detial
+http://localhost:8000/api/team/projects --> responses team projects list
+http://localhost:8000/api/team/projects/uuid-pk  --> responses team project detail
