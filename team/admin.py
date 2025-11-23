@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import TeamMember, Project, WorkExperience, Education
+from .models import TeamMember, Project, WorkExperience, Education, Achievement
 
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):
@@ -25,3 +25,9 @@ class WorkExperienceAdmin(admin.ModelAdmin):
 class EducationAdmin(admin.ModelAdmin):
     list_display = ('degree', 'field_of_study', 'university', 'member')
     search_fields = ('degree', 'field_of_study', 'university', 'member__full_name')
+    
+@admin.register(Achievement)
+class AchievementAdmin(admin.ModelAdmin):
+    list_display = ('title', 'member', 'event', 'award', 'date')
+    search_fields = ('title', 'event', 'member__full_name')
+    list_filter = ('event', 'date')

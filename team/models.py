@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class TeamMember(models.Model):
     ROLE_CHOICES = [
@@ -15,6 +16,12 @@ class TeamMember(models.Model):
     photo = models.ImageField(upload_to='team_photos/', blank=True, null=True)
     linkedin = models.URLField(blank=True)
     github = models.URLField(blank=True)
+    skills = ArrayField(
+        models.CharField(max_length=50),
+        blank=True,
+        default=list,
+        help_text="List of skills for the team member"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -87,3 +94,22 @@ class Education(models.Model):
 
     def __str__(self):
         return f"{self.degree} in {self.field_of_study} at {self.university}"
+    
+class Achievement(models.Model):
+    member = models.ForeignKey(
+        TeamMember,
+        on_delete=models.CASCADE,
+        related_name='achievements'
+    )
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    event = models.CharField(max_length=150, blank=True, help_text="Hackathon, competition, conference name")
+    date = models.DateField(blank=True, null=True)
+    award = models.CharField(max_length=150, blank=True, help_text="Prize, rank, or award title")
+    link = models.URLField(blank=True, help_text="Optional link to certificate or event page")
+
+    class Meta:
+        ordering = ['-date', 'title']
+
+    def __str__(self):
+        return f"{self.title} - {self.member.full_name}"

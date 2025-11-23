@@ -3,7 +3,13 @@ from rest_framework import serializers
 from .models import TeamMember
 
 from rest_framework import serializers
-from .models import TeamMember, Project, WorkExperience, Education
+from .models import TeamMember, Project, WorkExperience, Education, Achievement
+
+
+class AchievementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Achievement
+        fields = ['id', 'title', 'description', 'event', 'date', 'award', 'link']
 
 
 class EducationSerializer(serializers.ModelSerializer):
@@ -33,13 +39,14 @@ class TeamMemberSerializer(serializers.ModelSerializer):
     educations = EducationSerializer(many=True, read_only=True)
     projects = ProjectSerializer(many=True, read_only=True)
     work_experiences = WorkExperienceSerializer(many=True, read_only=True)
+    achievements = AchievementSerializer(many=True, read_only=True)
 
     class Meta:
         model = TeamMember
         fields = [
             'id', 'full_name', 'role', 'bio', 'photo',
-            'linkedin', 'github', 'projects', 'work_experiences',
-            'educations', 
+            'linkedin', 'github', 'projects','skills',
+            'work_experiences', 'educations', 'achievements'
         ]
 
 
