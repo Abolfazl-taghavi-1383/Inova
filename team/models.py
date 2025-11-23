@@ -22,3 +22,29 @@ class TeamMember(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+class Project(models.Model):
+    CATEGORY_CHOICES = [
+        ('WEB', 'Web Development'),
+        ('ML', 'Machine Learning'),
+        ('DSN', 'Design'),
+        ('MKT', 'Marketing'),
+        ('OTH', 'Other'),
+    ]
+
+    title = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    category = models.CharField(max_length=3, choices=CATEGORY_CHOICES, default='OTH')
+    image = models.ImageField(upload_to='project_images/', blank=True, null=True)
+    link = models.URLField(blank=True)
+    members = models.ManyToManyField(TeamMember, related_name='projects')
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-start_date', 'title']
+
+    def __str__(self):
+        return self.title
