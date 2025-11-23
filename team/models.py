@@ -48,3 +48,23 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+    
+class WorkExperience(models.Model):
+    member = models.ForeignKey(
+        TeamMember,
+        on_delete=models.CASCADE,
+        related_name='work_experiences'
+    )
+    
+    company_name = models.CharField(max_length=150)
+    position = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-start_date']
+
+    def __str__(self):
+        return f"{self.position} at {self.company_name}"

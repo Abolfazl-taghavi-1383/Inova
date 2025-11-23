@@ -4,7 +4,11 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 from .models import TeamMember, Project
-from .serializers import TeamMemberSerializer, ProjectSerializer
+from .serializers import (TeamMemberSerializer,
+                          ProjectSerializer,
+                          WorkExperience,
+                          WorkExperienceSerializer,
+                          )
 
 @api_view(['GET'])
 def team_list(request):
@@ -33,3 +37,14 @@ def project_detail(request, pk):
     serializer = ProjectSerializer(project)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def experience_list(request):
+    exps = WorkExperience.objects.all()
+    serializer = WorkExperienceSerializer(exps, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def experience_detail(request, pk):
+    exp = get_object_or_404(WorkExperience, pk=pk)
+    serializer = WorkExperienceSerializer(exp)
+    return Response(serializer.data, status=status.HTTP_200_OK)
