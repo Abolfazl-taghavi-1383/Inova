@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+import uuid 
 
 class TeamMember(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
     ROLE_CHOICES = [
         ('DEV', 'Developer'),
         ('DSN', 'Designer'),
@@ -32,6 +35,8 @@ class TeamMember(models.Model):
 
 
 class Project(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
     CATEGORY_CHOICES = [
         ('WEB', 'Web Development'),
         ('ML', 'Machine Learning'),
@@ -57,6 +62,8 @@ class Project(models.Model):
         return self.title
     
 class WorkExperience(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
     member = models.ForeignKey(
         TeamMember,
         on_delete=models.CASCADE,
@@ -78,6 +85,8 @@ class WorkExperience(models.Model):
         return f"{self.position} at {self.company_name}"
     
 class Education(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
     member = models.ForeignKey(
         TeamMember,
         on_delete=models.CASCADE,
@@ -98,6 +107,8 @@ class Education(models.Model):
         return f"{self.degree} in {self.field_of_study} at {self.university}"
     
 class Achievement(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
     member = models.ForeignKey(
         TeamMember,
         on_delete=models.CASCADE,
