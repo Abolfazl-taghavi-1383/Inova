@@ -4,23 +4,25 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 
 from .models import TeamMember, Project
-from .serializers import (TeamMemberSerializer,
+from .serializers import (
                           ProjectSerializer,
                           WorkExperience,
                           WorkExperienceSerializer,
+                          TeamMemberDetailSerializer,
+                          TeamMemberListSerializer,
                           )
 
 @api_view(['GET'])
 def team_list(request):
     members = TeamMember.objects.all()
-    serializer = TeamMemberSerializer(members, many=True)
+    serializer = TeamMemberListSerializer(members, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def team_detail(request, pk):
     member = get_object_or_404(TeamMember, pk=pk)
-    serializer = TeamMemberSerializer(member)
+    serializer = TeamMemberDetailSerializer(member)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
