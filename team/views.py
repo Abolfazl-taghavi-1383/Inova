@@ -38,15 +38,3 @@ def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
     serializer = ProjectSerializer(project)
     return Response(serializer.data, status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-def experience_list(request):
-    exps = WorkExperience.objects.all()
-    serializer = WorkExperienceSerializer(exps, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-def experience_detail(request, pk):
-    exp = get_object_or_404(WorkExperience, pk=pk)
-    serializer = WorkExperienceSerializer(exp)
-    return Response(serializer.data, status=status.HTTP_200_OK)
