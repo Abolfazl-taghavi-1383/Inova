@@ -1,6 +1,13 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-import uuid 
+from uuid import uuid4
+import os
+import uuid
+
+def rename_image(instance, filename):
+    ext = filename.split('.')[-1]
+    new_filename = f'{uuid4().hex}.{ext}'
+    return os.path.join(f'{instance.__class__.__name__.lower()}_images', new_filename)
 
 class TeamMember(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -16,7 +23,7 @@ class TeamMember(models.Model):
     full_name = models.CharField(max_length=100)
     role = models.CharField(max_length=3, choices=ROLE_CHOICES)
     bio = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='team_photos/', blank=True, null=True)
+    photo = models.ImageField(upload_to=rename_image, blank=True, null=True)
     linkedin = models.URLField(blank=True)
     github = models.URLField(blank=True)
     skills = ArrayField(
@@ -48,7 +55,7 @@ class Project(models.Model):
     title = models.CharField(max_length=150)
     description = models.TextField(blank=True)
     category = models.CharField(max_length=3, choices=CATEGORY_CHOICES, default='OTH')
-    image = models.ImageField(upload_to='project_images/', blank=True, null=True)
+    image = models.ImageField(upload_to=rename_image, blank=True, null=True)
     link = models.URLField(blank=True)
     members = models.ManyToManyField(TeamMember, related_name='projects')
     start_date = models.DateField(blank=True, null=True)
@@ -71,7 +78,7 @@ class WorkExperience(models.Model):
     )
     
     company_name = models.CharField(max_length=150)
-    image = models.ImageField(upload_to='work_experience_images/', blank=True, null=True)
+    image = models.ImageField(upload_to=rename_image, blank=True, null=True)
     position = models.CharField(max_length=100)
     start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True)
@@ -92,7 +99,7 @@ class Education(models.Model):
         on_delete=models.CASCADE,
         related_name='educations'
     )
-    image = models.ImageField(upload_to='education_images/', blank=True, null=True)
+    image = models.ImageField(upload_to=rename_image, blank=True, null=True)
     degree = models.CharField(max_length=100)
     field_of_study = models.CharField(max_length=150)
     university = models.CharField(max_length=150)
@@ -115,7 +122,7 @@ class Achievement(models.Model):
         related_name='achievements'
     )
     title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='achievement_images/', blank=True, null=True)
+    image = models.ImageField(upload_to=rename_image, blank=True, null=True)
     description = models.TextField(blank=True)
     event = models.CharField(max_length=150, blank=True, help_text="Hackathon, competition, conference name")
     date = models.DateField(blank=True, null=True)

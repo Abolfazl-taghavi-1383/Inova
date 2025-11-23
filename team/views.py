@@ -15,26 +15,26 @@ from .serializers import (
 @api_view(['GET'])
 def team_list(request):
     members = TeamMember.objects.all()
-    serializer = TeamMemberListSerializer(members, many=True)
+    serializer = TeamMemberListSerializer(members, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def team_detail(request, pk):
     member = get_object_or_404(TeamMember, pk=pk)
-    serializer = TeamMemberDetailSerializer(member)
+    serializer = TeamMemberDetailSerializer(member, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def project_list(request):
     projects = Project.objects.all()
-    serializer = ProjectSerializer(projects, many=True)
+    serializer = ProjectSerializer(projects, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def project_detail(request, pk):
-    project = get_object_or_404(Project, pk=pk)
+    project = get_object_or_404(Project, pk=pk, context={'request': request})
     serializer = ProjectSerializer(project)
     return Response(serializer.data, status=status.HTTP_200_OK)
