@@ -9,19 +9,19 @@ from .models import TeamMember, Project, WorkExperience, Education, Achievement
 class AchievementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Achievement
-        fields = ['id', 'image', 'title', 'description', 'event', 'date', 'award', 'link']
+        fields = ['id', 'title', 'description', 'event', 'date', 'award', 'link']
 
 
 class EducationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Education
-        fields = ['id', 'image', 'degree', 'field_of_study', 'university', 'start_year', 'end_year', 'description']
+        fields = ['id', 'degree', 'field_of_study', 'university', 'start_year', 'end_year', 'description']
 
 
 class WorkExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkExperience
-        fields = ['id', 'image', 'company_name', 'position', 'start_date', 'end_date', 'description']
+        fields = ['id', 'company_name', 'position', 'start_date', 'end_date', 'description']
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = [
-            'id', 'title', 'description', 'category', 'image', 'link',
+            'id', 'title', 'description', 'category', 'link',
             'start_date', 'end_date', 'members',
         ]
 
@@ -44,7 +44,7 @@ class TeamMemberDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
         fields = [
-            'id', 'full_name', 'role', 'bio', 'photo',
+            'id', 'full_name', 'role', 'bio',
             'linkedin', 'github', 'projects','skills',
             'work_experiences', 'educations', 'achievements'
         ]
@@ -52,4 +52,4 @@ class TeamMemberDetailSerializer(serializers.ModelSerializer):
 class TeamMemberListSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamMember
-        fields = ['id', 'full_name', 'role', 'bio', 'photo','skills', ]
+        fields = ['id', 'full_name', 'role', 'bio', 'skills']
