@@ -51,7 +51,7 @@ def serve_universal_image(request, model_type, pk):
     image_file = getattr(obj, field_name)
 
     if not image_file:
-        raise Http404("Image not found for this object")
+        return Response({'message': 'object has no image',}, status=status.HTTP_200_OK)
 
     try:
         return FileResponse(image_file.open())
