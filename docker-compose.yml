@@ -20,9 +20,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DEBUG=1
-      - DJANGO_SETTINGS_MODULE=config.settings
-      - POSTGRES_DB=inova_db
+      - "SECRET_KEY=${SECRET_KEY}"
+      - "DEBUG=${DEBUG}"
+      - "SETTINGS_MODULE=${SETTINGS_MODULE}"
       - POSTGRES_USER=inova_user
       - POSTGRES_PASSWORD=inova_pass
       - POSTGRES_HOST=db
