@@ -22,7 +22,8 @@ class TeamMember(models.Model):
 
     full_name = models.CharField(max_length=100)
     role = models.CharField(max_length=3, choices=ROLE_CHOICES)
-    bio = models.TextField(blank=True)
+    bio = models.CharField(blank=True, max_length=500)
+    description = models.TextField(blank=True)
     photo = models.ImageField(upload_to=rename_image, blank=True, null=True)
     linkedin = models.URLField(blank=True)
     github = models.URLField(blank=True)
