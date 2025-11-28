@@ -31,7 +31,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = [
             'id', 'title', 'description', 'category', 'link',
-            'start_date', 'end_date', 'members',
+            'start_date', 'end_date', 'members', 'technologies',
         ]
 
 

@@ -59,6 +59,12 @@ class Project(models.Model):
     image = models.ImageField(upload_to=rename_image, blank=True, null=True)
     link = models.URLField(blank=True)
     members = models.ManyToManyField(TeamMember, related_name='projects')
+    technologies = ArrayField(
+        models.CharField(max_length=50),
+        blank=True,
+        default=list,
+        help_text="List of technologies for the project"
+    )
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
