@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from environs import Env
-import socket
+import dj_database_url
 
 
 # for load environment variables
@@ -99,14 +99,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 if not DEBUG:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env("LIARA_POSTGRESQL_DB_NAME", "postgres"),
-            'USER': env("LIARA_POSTGRESQL_DB_USER", "postgres"),
-            'PASSWORD': env("LIARA_POSTGRESQL_DB_PASS", "postgres"),
-            'HOST': env("LIARA_POSTGRESQL_DB_HOST", "db"),
-            'PORT': env("LIARA_POSTGRESQL_DB_PORT", 5432),
-        }
+        'default': dj_database_url.config(default=env("LIARA_POSTQRESQL_DATABASE_URL"))
     }
 else:
     DATABASES = {
