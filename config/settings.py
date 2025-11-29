@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 if not DEBUG:
     DATABASES = {
-        'default': dj_database_url.config(default=env("LIARA_POSTQRESQL_DATABASE_URL"))
+        'default': dj_database_url.config(default=env("LIARA_POSTGRESQL_DATABASE_URL", "postgres://user:pass@localhost:5432/dbname"))
     }
 else:
     DATABASES = {
