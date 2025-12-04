@@ -102,6 +102,28 @@ if not DEBUG:
     DATABASES = {
         'default': dj_database_url.config(default=env("LIARA_POSTGRESQL_DATABASE_URL", "postgres://user:pass@localhost:5432/dbname"))
     }
+    
+    # AWS S3 Settings for Liara
+    AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
+    AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
+    AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
+    
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {
+                "access_key": AWS_ACCESS_KEY_ID,
+                "secret_key": AWS_SECRET_ACCESS_KEY,
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "endpoint_url": AWS_S3_ENDPOINT_URL,
+                "default_acl": "private",
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 else:
     DATABASES = {
         'default': {
@@ -167,3 +189,4 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": lambda request: True,
     }
+    

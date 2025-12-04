@@ -3,7 +3,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from django.http import FileResponse, Http404
+from django.http import StreamingHttpResponse, Http404
+import boto3
+import mimetypes
+from django.conf import settings
 
 from .models import TeamMember, Project, WorkExperience, Education, Achievement
 from .serializers import (
@@ -13,27 +16,13 @@ from .serializers import (
                           )
 
 MODEL_CONFIG = {
-    'member': {
-        'model': TeamMember,
-        'field': 'photo'
-    },
-    'project': {
-        'model': Project,
-        'field': 'image'
-    },
-    'experience': {
-        'model': WorkExperience,
-        'field': 'image'
-    },
-    'education': {
-        'model': Education,
-        'field': 'image'
-    },
-    'achievement': {
-        'model': Achievement,
-        'field': 'image'
-    }
+    'member': {'model': TeamMember, 'field': 'photo'},
+    'project': {'model': Project, 'field': 'image'},
+    'experience': {'model': WorkExperience, 'field': 'image'},
+    'education': {'model': Education, 'field': 'image'},
+    'achievement': {'model': Achievement, 'field': 'image'}
 }
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -48,15 +37,27 @@ def serve_universal_image(request, model_type, pk):
 
     obj = get_object_or_404(model_class, pk=pk)
     
-    image_file = getattr(obj, field_name)
+    image_field = getattr(obj, field_name)
 
-    if not image_file:
+    if not image_field:
         return Response({'message': 'object has no image',}, status=status.HTTP_200_OK)
 
     try:
-        return FileResponse(image_file.open())
-    except FileNotFoundError:
-        raise Http404("File path missing on server")
+       file_handle = image_field.open(mode='rb')
+       content_type, _ = mimetypes.guess_type(image_field.name)
+       
+       if content_type is None:
+            content_type = 'application/octet-stream'
+            response = StreamingHttpResponse(file_handle, content_type=content_type)
+
+            response['Content-Disposition'] = f'inline; filename="{image_field.name.split("/")[-1]}"'
+            response['Content-Length'] = image_field.size
+
+            return response
+
+    except Exception as e:
+        print(f"Error serving file from S3 storage: {e}")
+        raise Http404("File could not be retrieved from storage.")
 
 
 @api_view(['GET'])
