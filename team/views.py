@@ -28,36 +28,37 @@ MODEL_CONFIG = {
 @permission_classes([AllowAny])
 def serve_universal_image(request, model_type, pk):
     config = MODEL_CONFIG.get(model_type)
-    
     if not config:
         raise Http404("Invalid resource type")
 
     model_class = config['model']
     field_name = config['field']
-
     obj = get_object_or_404(model_class, pk=pk)
-    
     image_field = getattr(obj, field_name)
 
     if not image_field:
-        return Response({'message': 'object has no image',}, status=status.HTTP_200_OK)
+        return Response({'message': 'Object has no image'}, status=status.HTTP_404_NOT_FOUND)
+
 
     try:
-       file_handle = image_field.open(mode='rb')
-       content_type, _ = mimetypes.guess_type(image_field.name)
-       
-       if content_type is None:
+        file_handle = image_field.open(mode='rb')
+        
+        content_type, _ = mimetypes.guess_type(image_field.name)
+        if content_type is None:
             content_type = 'application/octet-stream'
-            response = StreamingHttpResponse(file_handle, content_type=content_type)
 
-            response['Content-Disposition'] = f'inline; filename="{image_field.name.split("/")[-1]}"'
-            response['Content-Length'] = image_field.size
-
-            return response
-
+        response = StreamingHttpResponse(file_handle, content_type=content_type)
+        response['Content-Length'] = image_field.size
+        response['Content-Disposition'] = f'inline; filename="{image_field.name.split("/")[-1]}"'
+        
+        return response
     except Exception as e:
         print(f"Error serving file from S3 storage: {e}")
-        raise Http404("File could not be retrieved from storage.")
+        
+        return Response(
+            {"error": "File could not be retrieved from storage."},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 @api_view(['GET'])

@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from environs import Env
 import dj_database_url
+from boto3.session import Config
 
 
 # for load environment variables
@@ -173,15 +174,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        },
-    }
-    
+
 AWS_ACCESS_KEY_ID = env('LIARA_ACCESS_KEY', "dummy-secret-key")
 AWS_SECRET_ACCESS_KEY = env('LIARA_SECRET_KEY', "dummy-access-key")
 AWS_STORAGE_BUCKET_NAME = env('LIARA_BUCKET_NAME', "dummy-bucket")
@@ -189,3 +182,20 @@ AWS_S3_ENDPOINT_URL = env('LIARA_ENDPOINT', "https://dummy-endpoint.com")
 
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_ENDPOINT_URL.replace('https://', '')}"
 AWS_DEFAULT_ACL = 'private' 
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": AWS_ACCESS_KEY_ID,
+            "secret_key": AWS_SECRET_ACCESS_KEY,
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "endpoint_url": AWS_S3_ENDPOINT_URL,
+            "default_acl": "private",
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+    
