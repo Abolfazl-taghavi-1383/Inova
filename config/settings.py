@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if not DEBUG:
+if env.bool("PRODUCTION"):
     DATABASES = {
         'default': dj_database_url.config(default=env("LIARA_POSTGRESQL_DATABASE_URL", "postgres://user:pass@localhost:5432/dbname"))
     }
