@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'rest_framework',
     'corsheaders',
+    'storages',
     
     # local apps
     'accounts',
@@ -112,17 +113,18 @@ if not DEBUG:
         },
     }
     
-    AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
-    AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.getenv('LIARA_BUCKET_NAME')
-    AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
-    
-    AWS_DEFAULT_ACL = 'private'
-    
+    AWS_ACCESS_KEY_ID = env('LIARA_ACCESS_KEY')
+    AWS_SECRET_ACCESS_KEY = env('LIARA_SECRET_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('LIARA_BUCKET_NAME')
+    AWS_S3_ENDPOINT_URL = env('LIARA_ENDPOINT')
+
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_ENDPOINT_URL.replace('https://', '')}"
+    AWS_DEFAULT_ACL = 'private' 
+
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
-    
+
 else:
     DATABASES = {
         'default': {
@@ -133,6 +135,10 @@ else:
             'HOST': os.environ.get('POSTGRES_HOST', 'db'),
             'PORT': os.environ.get('POSTGRES_PORT', 5432),
         }
+    }
+    
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: True,
     }
 
 
@@ -183,9 +189,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-if DEBUG:
-    DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TOOLBAR_CALLBACK": lambda request: True,
-    }
-    
