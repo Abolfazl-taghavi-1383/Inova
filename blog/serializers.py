@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Comment
-
+from .models import Post
 
 class PostListSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField()
