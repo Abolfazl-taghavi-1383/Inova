@@ -103,23 +103,6 @@ if not DEBUG:
     DATABASES = {
         'default': dj_database_url.config(default=env("LIARA_POSTGRESQL_DATABASE_URL", "postgres://user:pass@localhost:5432/dbname"))
     }
-    
-    STORAGES = {
-        "default": {
-            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        },
-        "staticfiles": {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-        },
-    }
-    
-    AWS_ACCESS_KEY_ID = env('LIARA_ACCESS_KEY')
-    AWS_SECRET_ACCESS_KEY = env('LIARA_SECRET_KEY')
-    AWS_STORAGE_BUCKET_NAME = env('LIARA_BUCKET_NAME')
-    AWS_S3_ENDPOINT_URL = env('LIARA_ENDPOINT')
-
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_ENDPOINT_URL.replace('https://', '')}"
-    AWS_DEFAULT_ACL = 'private' 
 
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -189,3 +172,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+    
+AWS_ACCESS_KEY_ID = env('LIARA_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = env('LIARA_SECRET_KEY')
+AWS_STORAGE_BUCKET_NAME = env('LIARA_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = env('LIARA_ENDPOINT')
+
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_ENDPOINT_URL.replace('https://', '')}"
+AWS_DEFAULT_ACL = 'private' 
