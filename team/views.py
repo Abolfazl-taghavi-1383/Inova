@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.http import StreamingHttpResponse, Http404
-import boto3
 import mimetypes
 from django.conf import settings
 

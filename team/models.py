@@ -1,12 +1,11 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from uuid import uuid4
 import os
 import uuid
 
 def rename_image(instance, filename):
     ext = filename.split('.')[-1]
-    new_filename = f'{uuid4().hex}.{ext}'
+    new_filename = f'{uuid.uuid4().hex}.{ext}'
     return os.path.join(f'{instance.__class__.__name__.lower()}_images', new_filename)
 
 class TeamMember(models.Model):
