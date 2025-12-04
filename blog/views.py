@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 import mimetypes
 from rest_framework import status
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from .serializers import PostDetailSerializer, PostListSerializer
 from .models import Post
@@ -56,7 +56,7 @@ class ListPostAPIView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
     
-class DetailPostAPIView(RetrieveUpdateDestroyAPIView):
+class DetailPostAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
     lookup_field = "slug"
     serializer_class = PostDetailSerializer
