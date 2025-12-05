@@ -28,11 +28,8 @@ class PostDetailSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "body",
-            "author",
-            "image",
             "created_at",
             "updated_at",
-            "comments",
         ]
 
     def get_slug(self, obj):

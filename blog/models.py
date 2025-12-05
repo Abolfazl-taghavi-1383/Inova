@@ -28,7 +28,7 @@ class Post(models.Model):
 
     def get_api_url(self):
         try:
-            return reverse("posts_api:post_detail", kwargs={"slug": self.slug})
+            return reverse("blog:post_detail", kwargs={"slug": self.slug})
         except:
             None
 
