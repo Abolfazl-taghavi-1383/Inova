@@ -3,7 +3,7 @@ from django.shortcuts import reverse
 import uuid
 
 
-from .utils import rename_image, create_slug
+from .utils import rename_image, unique_slugify
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -27,7 +27,5 @@ class Post(models.Model):
             None
             
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = create_slug(self)
-            
+        unique_slugify(self, self.title) 
         super().save(*args, **kwargs)
