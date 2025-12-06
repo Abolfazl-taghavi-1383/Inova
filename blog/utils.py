@@ -2,17 +2,15 @@ from django.utils.text import slugify
 import os
 import uuid
 
-
-from .models import Post
-
 # Recursive Function to generate unique slug
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)
     
     if new_slug is not None:
         slug = new_slug
-        
-    qs = Post.objects.filter(slug=slug).order_by("-id")
+    
+    model = instance.__class__
+    qs = model.objects.filter(slug=slug).order_by("-id")
     exists = qs.exists()
     
     if exists:

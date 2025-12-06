@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_save
 
-from .functions import create_slug
+from .utils import create_slug
 from .models import Post
 
 def pre_save_post_receiver(sender, instance, *args, **kwargs):

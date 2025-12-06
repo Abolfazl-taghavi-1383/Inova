@@ -3,7 +3,7 @@ from django.shortcuts import reverse
 import uuid
 
 
-from .functions import rename_image
+from .utils import rename_image
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
