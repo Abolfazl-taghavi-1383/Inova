@@ -3,14 +3,14 @@ from django.shortcuts import reverse
 import uuid
 
 
-from .utils import rename_image
+from .utils import rename_image, create_slug
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     
     photo = models.ImageField(upload_to=rename_image, blank=True, null=True)
     title = models.CharField(max_length=100)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True, blank=True)
     body = models.TextField()
     description = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -25,3 +25,9 @@ class Post(models.Model):
             return reverse("blog:post_detail", kwargs={"slug": self.slug})
         except:
             None
+            
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = create_slug(self)
+            
+        super().save(*args, **kwargs)
