@@ -9,6 +9,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from .serializers import PostDetailSerializer, PostListSerializer
 from .models import Post
+from .pagination import PostLimitOffsetPagination
 
 MODEL_CONFIG = {
     'post': {'model': Post, 'field': 'photo'},
@@ -55,6 +56,7 @@ def serve_universal_image(request, model_type, pk):
 class ListPostAPIView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
+    pagination_class = PostLimitOffsetPagination
     
 class DetailPostAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
