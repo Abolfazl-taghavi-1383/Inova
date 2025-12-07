@@ -8,7 +8,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
-            "created_at"
+            "created_at",
             "slug"
         ]
     
