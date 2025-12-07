@@ -9,6 +9,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "created_at"
+            "slug"
         ]
     
 class PostDetailSerializer(serializers.ModelSerializer):
