@@ -2,8 +2,6 @@ from rest_framework import serializers
 from .models import Post
 
 class PostListSerializer(serializers.ModelSerializer):
-    url = serializers.SerializerMethodField()
-
     class Meta:
         model = Post
         fields = [
@@ -13,9 +11,6 @@ class PostListSerializer(serializers.ModelSerializer):
             "description",
             "created_at"
         ]
-
-    def get_url(self, obj):
-        return obj.get_api_url()
     
 class PostDetailSerializer(serializers.ModelSerializer):
     slug = serializers.SerializerMethodField(read_only=True)
