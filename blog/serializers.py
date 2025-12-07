@@ -6,7 +6,6 @@ class PostListSerializer(serializers.ModelSerializer):
         model = Post
         fields = [
             "id",
-            "url",
             "title",
             "description",
             "created_at"
