@@ -7,5 +7,5 @@ http://localhost:8000/api/team/media/str:model-type/uuid:pk --> serves db object
 
 
 http://localhost:8000/api/blog/ --> responses posts list
-http://localhost:8000/api/blog/uuid:pk --> responses post detial
+http://localhost:8000/api/blog/slug --> responses post detial
 http://localhost:8000/api/blog/media/str:model-type/uuid:pk --> serves db object photos by model-type and uuid
