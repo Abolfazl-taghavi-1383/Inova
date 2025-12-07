@@ -2,11 +2,14 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 import os
 import uuid
+from django_jalali.db import models as jmodels
+
 
 def rename_image(instance, filename):
     ext = filename.split('.')[-1]
     new_filename = f'{uuid.uuid4().hex}.{ext}'
     return os.path.join(f'{instance.__class__.__name__.lower()}_images', new_filename)
+
 
 class TeamMember(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -32,7 +35,7 @@ class TeamMember(models.Model):
         default=list,
         help_text="List of skills for the team member"
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = jmodels.jDateField(auto_now_add=True)
 
     class Meta:
         ordering = ['full_name']
@@ -64,9 +67,9 @@ class Project(models.Model):
         default=list,
         help_text="List of technologies for the project"
     )
-    start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    start_date = jmodels.jDateField(blank=True, null=True)
+    end_date = jmodels.jDateField(blank=True, null=True)
+    created_at = jmodels.jDateField(auto_now_add=True)
 
     class Meta:
         ordering = ['-start_date', 'title']
@@ -86,10 +89,10 @@ class WorkExperience(models.Model):
     company_name = models.CharField(max_length=150)
     image = models.ImageField(upload_to=rename_image, blank=True, null=True)
     position = models.CharField(max_length=100)
-    start_date = models.DateField()
-    end_date = models.DateField(blank=True, null=True)
+    start_date = jmodels.jDateField()
+    end_date = jmodels.jDateField(blank=True, null=True)
     description = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = jmodels.jDateField(auto_now_add=True)
 
     class Meta:
         ordering = ['-start_date']
@@ -109,7 +112,7 @@ class Education(models.Model):
     degree = models.CharField(max_length=100)
     field_of_study = models.CharField(max_length=150)
     university = models.CharField(max_length=150)
-    start_year = models.IntegerField()
+    start_year = models.PositiveBigIntegerField()
     end_year = models.IntegerField(blank=True, null=True)
     description = models.TextField(blank=True)
 
@@ -131,7 +134,7 @@ class Achievement(models.Model):
     image = models.ImageField(upload_to=rename_image, blank=True, null=True)
     description = models.TextField(blank=True)
     event = models.CharField(max_length=150, blank=True, help_text="Hackathon, competition, conference name")
-    date = models.DateField(blank=True, null=True)
+    date = jmodels.jDateField(blank=True, null=True)
     award = models.CharField(max_length=150, blank=True, help_text="Prize, rank, or award title")
     link = models.URLField(blank=True, help_text="Optional link to certificate or event page")
 

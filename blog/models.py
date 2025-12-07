@@ -1,6 +1,7 @@
 from django.db import models
 from django.shortcuts import reverse
 import uuid
+from django_jalali.db import models as jmodels
 
 
 from .utils import rename_image, unique_slugify
@@ -13,8 +14,8 @@ class Post(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     body = models.TextField()
     description = models.CharField(max_length=200)
-    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False) 
+    created_at = jmodels.jDateTimeField(auto_now=False, auto_now_add=True)
+    updated_at = jmodels.jDateTimeField(auto_now=True, auto_now_add=False) 
     
     
     def __str__(self):
